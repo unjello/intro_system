@@ -1,0 +1,14 @@
+= intro_system
+
+_intro_system_ is framework for 4k and 64k intros
+
+
+== See Also
+
+https://github.com/in4k/isystem1k4k[isystem1k4k] :: iq's opensource 1k/4k framework(s), githubed from http://www.iquilezles.org/code/isystem1k4k/isystem1k4k.htm[his website].
+
+http://crinkler.net/[crinkler] :: executable file compressor for windows
+
+== License
+
+- CC0 (~Public Domain)
