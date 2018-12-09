@@ -1,0 +1,5 @@
+*~
+build/
+
+# output from crinkler
+./*.asm

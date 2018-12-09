@@ -1,0 +1,23 @@
+builddir = build/
+cflags = -Wall
+
+rule cxx
+  command = clang++ -m32 -O2 -fno-rtti -masm=intel -std=c++2a -fno-asynchronous-unwind-tables -ffp-contract=fast -fno-cxx-exceptions -fno-exceptions -fmath-errno -DWINDOWS -ffast-math -D_CRT_SECURE_NO_WARNINGS -D_VC80_UPGRADE=0x0600 -D_USING_V110_SDK71_ $flags -c $in -o $out
+
+rule asm
+  command = nasm -f win32 -o $out $in
+
+rule cl
+  command = cl /c /nologo /W1 /WX- /diagnostics:classic /O2 /Ob1 /Oi /Os /Oy /D WINDOWS /D _CRT_SECURE_NO_WARNINGS /D _VC80_UPGRADE=0x0600 /D _USING_V110_SDK71_ /GF /Gm- /MT /Zp1 /GS- /Gy /arch:IA32 /fp:fast /fp:except- /Zc:wchar_t /Zc:forScope /Zc:inline /FAs /Gz /TP /analyze- /FC $in /Fo$out
+
+rule ccl
+  command = clang-cl -m32 /c /nologo /W1 /WX- /diagnostics:classic /O2 /Ob1 /Oi /Os /Oy /D WINDOWS /D _CRT_SECURE_NO_WARNINGS /D _VC80_UPGRADE=0x0600 /D _USING_V110_SDK71_ /GF /Gm- /MT /Zp1 /GS- /Gy /arch:IA32 /fp:fast /fp:except- /Zc:wchar_t /Zc:forScope /Zc:inline /FAs /Gz /TP /analyze- /FC $in /Fo$out
+
+rule link
+  command = crinkler.exe /SUBSYSTEM:WINDOWS /CRINKLER /HASHTRIES:300 /COMPMODE:SLOW /ORDERTRIES:4000 /UNALIGNCODE /REPORT:.\build\out.html /ENTRY:"entrypoint" "opengl32.lib" "glu32.lib" "winmm.lib" "kernel32.lib" "user32.lib" "gdi32.lib" "winspool.lib" "comdlg32.lib" "advapi32.lib" "shell32.lib" "ole32.lib" "oleaut32.lib" "uuid.lib" "odbc32.lib" "odbccp32.lib" $in /OUT:$out
+
+build build/intro.obj: cxx src/intro.cpp
+build build/system.obj: cxx src/system.cpp
+build build/main.obj: cxx src/main_win_rel.cpp
+
+build build/intro.exe: link build/intro.obj build/main.obj build/system.obj 
